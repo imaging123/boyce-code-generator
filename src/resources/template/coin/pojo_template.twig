@@ -1,0 +1,37 @@
+package {{groupId}}.domain;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+{{ imports }}
+
+/**
+{%- if (length(table.comment) != 0) %}
+ * {{ table.comment }}
+ *
+{%- endif %}
+ * @author {{ author}} - {{date}}
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class {{ table.titleName }} {
+{% if (length(table.primaryColumn.comment) != 0) %}
+    /**
+     * {{ table.primaryColumn.comment }}
+     */
+{%- endif %}
+    private {{ table.primaryColumn.javaType }} {{ table.primaryColumn.camelName }};
+    {% for column in table.columnList %}
+    {% if (length(column.comment) != 0) -%}
+    /**
+     * {{ column.comment }}
+     */
+    {% endif -%}
+    private {{ column.javaType }} {{ column.camelName }};
+    {% endfor %}
+}

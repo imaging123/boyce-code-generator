@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="appPane" xmlns="http://javafx.com/javafx/8.0.121"
+            fx:controller="controller.AppController">
+
+    <top>
+        <!-- menu -->
+        <MenuBar>
+            <!--<Menu text="模板">-->
+            <!--<MenuItem onAction="#showMybatisTemplate" text="MyBatisMVCTemplate">-->
+            <!--</MenuItem>-->
+            <!--</Menu>-->
+        </MenuBar>
+    </top>
+
+    <center>
+        <!-- body -->
+        <!--resources.template-->
+        <BorderPane fx:id="javaTemplatePane">
+            <left>
+                <!-- dao -->
+                <BorderPane fx:id="dataSourceTree">
+                    <top>
+                        <Button onAction="#createDataSourceInfo" text="新建"/>
+                    </top>
+                </BorderPane>
+            </left>
+            <center>
+
+                <GridPane hgap="20" vgap="50" BorderPane.alignment="CENTER">
+                    <padding>
+                        <Insets left="20" top="10"/>
+                    </padding>
+                    <!--GroupId-->
+                    <Label text="GroupId" GridPane.columnIndex="0" GridPane.fillWidth="117" GridPane.rowIndex="0"/>
+                    <TextField fx:id="groupIdField" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="0"/>
+
+                    <!--Author-->
+                    <Label text="Author" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="authorField" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="1"/>
+
+                    <!--TablePrefix-->
+                    <Label text="TablePrefix" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+                    <TextField fx:id="tablePrefixField" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                               GridPane.rowIndex="2" GridPane.valignment="TOP"/>
+
+                    <!--TemplateType-->
+                    <ChoiceBox fx:id="templateType" value="boyce" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="boyce"/>
+                                <String fx:value="java"/>
+                                <String fx:value="58coin"/>
+                                <String fx:value="58coin_sharding"/>
+                            </FXCollections>
+                        </items>
+                    </ChoiceBox>
+
+                    <!--TemplateList-->
+                    <ListView fx:id="templateItemsComboBox" GridPane.columnIndex="2" GridPane.fillHeight="10"
+                              GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                    </ListView>
+
+                    <ProgressBar fx:id="generateProgressBar" minWidth="502.0" prefHeight="20.0" prefWidth="502.0"
+                                 GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="5"
+                                 GridPane.rowSpan="1"/>
+
+                    <Label fx:id="progressDesc" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="6"/>
+
+                    <Button fx:id="buttonGenerate" onAction="#generate" prefHeight="27.0" prefWidth="89.0"
+                            text="Generate" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6"
+                            GridPane.valignment="CENTER">
+                    </Button>
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="122.0" minWidth="76.0" prefWidth="120.0"/>
+                        <ColumnConstraints maxWidth="161.0" minWidth="115.0" prefWidth="117.0"/>
+                        <ColumnConstraints/>
+                        <ColumnConstraints/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                        <RowConstraints/>
+                    </rowConstraints>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

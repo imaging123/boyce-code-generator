@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="{{groupId}}.data.{{table.titleName}}Repository">
+    <!-- Code Generated -->
+    <resultMap id="{{table.titleName}}Map" type="{{groupId}}.domain.{{table.titleName}}">
+        <id column="{{table.primaryColumn.name}}" property="{{table.primaryColumn.camelName}}" jdbcType="{{upper(table.primaryColumn.dbType)}}"/>
+    {%- for column in table.columnList %}
+        <result column="{{column.name}}" property="{{column.camelName}}" jdbcType="{{upper(column.dbType)}}"/>
+    {%- endfor %}
+    </resultMap>
+
+    <sql id="exampleWhereClause">
+        <where>
+            <foreach collection="example.preCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                        separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+    <sql id="tableName">{{table.name}}</sql>
+
+    <sql id="baseColumnListWithoutId">
+    {%- for column in table.columnList %}
+        {% if (loop.first != true) -%}
+        ,
+        {%- endif -%}
+        {{ column.name }}
+    {%- endfor %}
+    </sql>
+
+    <sql id="baseColumnList">
+        {{ table.primaryColumn.name -}},<include refid="baseColumnListWithoutId"/>
+    </sql>
+
+    <sql id="insertColumns">
+        {%- for column in table.columnList %}
+        <if test="record.{{column.camelName}} != null">{{column.name}},</if>
+        {%- endfor %}
+    </sql>
+
+    <sql id="insertValues">
+        {%- for column in table.columnList %}
+        <if test="record.{{column.camelName}} != null">#{record.{{column.camelName}}, jdbcType={{upper(column.dbType)}}},</if>
+        {%- endfor %}
+    </sql>
+
+    <sql id="batchInsertValues">
+        {%- for column in table.columnList %}
+        #{record.{{column.camelName}}, jdbcType={{upper(column.dbType)}}},
+        {%- endfor %}
+    </sql>
+
+    <sql id="batchInsertValuesOnDuplicateKey">
+        #{record.{{- table.primaryColumn.camelName -}}, jdbcType={{upper(column.dbType)}}},
+        <include refid="batchInsertValues"/>
+    </sql>
+
+    <sql id="updateSetFromBean">
+        {%- for column in table.columnList %}
+        <if test="record.{{column.camelName}} != null">{{column.name}}=#{record.{{column.camelName}}, jdbcType={{upper(column.dbType)}}} ,</if>
+        {%- endfor %}
+    </sql>
+
+    <!-- insert -->
+    <insert id="insert" parameterType="java.util.Map">
+        <selectKey resultType="{{table.primaryColumn.imports}}" keyProperty="record.{{table.primaryColumn.name}}" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into <include refid="tableName"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="insertColumns"/>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <include refid="insertValues"/>
+        </trim>
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.Map">
+        insert into <include refid="tableName"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="baseColumnListWithoutId"/>
+        </trim>
+        values
+        <foreach collection="records" item="record" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <include refid="batchInsertValues"/>
+            </trim>
+        </foreach>
+    </insert>
+
+    <insert id="batchInsertOnDuplicateKey" parameterType="java.util.Map">
+        insert into <include refid="tableName"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="baseColumnList"/>
+        </trim>
+        values
+        <foreach collection="records" item="record" index="index" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <include refid="batchInsertValuesOnDuplicateKey"/>
+            </trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        {%- for column in table.columnList -%}
+        {%- if (loop.first != true) -%}
+        ,
+        {%- endif %}
+        {{column.name}} = VALUES({{column.name}})
+        {%- endfor %}
+    </insert>
+    <!-- end insert -->
+
+    <!-- delete -->
+    <delete id="deleteById" parameterType="java.util.Map">
+        delete from <include refid="tableName"/> where {{table.primaryColumn.name}} = #{id, jdbcType={{upper(table.primaryColumn.dbType)}}}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="java.util.Map">
+        delete from <include refid="tableName"/>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+    </delete>
+
+    <delete id="deleteIn" parameterType="java.util.Map">
+        delete from <include refid="tableName"/> where {{table.primaryColumn.name}} in
+        <foreach collection="records" item="record" index="index" open="(" separator="," close=")">
+            #{record.{{table.primaryColumn.camelName}}, jdbcType={{upper(table.primaryColumn.dbType)}}}
+        </foreach>
+    </delete>
+    <!-- end delete -->
+
+    <!-- update -->
+    <update id="updateById" parameterType="java.util.Map">
+        update <include refid="tableName"/>
+        <set>
+            <include refid="updateSetFromBean"/>
+        </set>
+        where {{table.primaryColumn.name}} = #{record.{{table.primaryColumn.camelName}},jdbcType={{upper(table.primaryColumn.dbType)}}}
+    </update>
+
+    <update id="updateByExample" parameterType="java.util.Map">
+        update <include refid="tableName"/>
+        <set>
+            <include refid="updateSetFromBean"/>
+        </set>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+    </update>
+
+    <update id="batchUpdate" parameterType="java.util.Map">
+        <foreach collection="records" item="record" index="index" open="" close="" separator=";">
+            update <include refid="tableName"/>
+            <set>
+                <include refid="updateSetFromBean"/>
+            </set>
+            where {{table.primaryColumn.name}}=#{record.{{table.primaryColumn.camelName}},jdbcType={{upper(table.primaryColumn.dbType)}}}
+        </foreach>
+    </update>
+    <!-- end update -->
+
+    <!-- select -->
+    <select id="selectById" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+        select
+        <include refid="baseColumnList"/>
+        from <include refid="tableName"/>
+        where {{table.primaryColumn.name}} = #{id,jdbcType={{upper(table.primaryColumn.dbType)}}}
+    </select>
+
+    <select id="selectByExample" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+        select
+        <if test="example != null and example.distinct">
+            distinct
+        </if>
+        <include refid="baseColumnList"/>
+        from <include refid="tableName"/>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+        <if test="example != null and example.orderByClause != null">
+            order by ${example.orderByClause}
+        </if>
+    </select>
+
+    <select id="selectOneByExample" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+        select
+        <include refid="baseColumnList"/>
+        from <include refid="tableName"/>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+        limit 1
+    </select>
+
+    <select id="selectIn" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+        select
+        <include refid="baseColumnList"/>
+        from <include refid="tableName"/>
+        where {{table.primaryColumn.name}} IN
+        <foreach collection="records" item="record" index="index" open="(" separator="," close=")">
+            #{record.{{table.primaryColumn.camelName}},jdbcType={{upper(table.primaryColumn.dbType)}}}
+        </foreach>
+    </select>
+
+     <select id="countByExample" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(*) as total from <include refid="tableName"/>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+     </select>
+
+     <select id="countByPager" resultType="java.lang.Integer" parameterType="java.util.Map">
+         select count(*) as total from <include refid="tableName"/>
+         <if test="example != null">
+             <include refid="exampleWhereClause"/>
+         </if>
+     </select>
+
+     <select id="selectByPager" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+         select
+         <include refid="baseColumnList"/>
+         from
+         <include refid="tableName"/>
+         <if test="example != null">
+             <include refid="exampleWhereClause"/>
+         </if>
+         <if test="pager.sortItem != null and pager.sortItem != '' ">
+             order by ${pager.sortItem} ${pager.sortType}
+         </if>
+         limit #{pager.startIndex} , #{pager.pageSize}
+     </select>
+     <!-- end select -->
+
+     <!-- My Custom Interfaces -->
+</mapper>

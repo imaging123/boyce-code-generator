@@ -1,0 +1,356 @@
+package {{ groupId }}.domain.example;
+
+import java.util.List;
+import java.util.ArrayList;
+{{ imports }}
+
+/**
+ * @author {{ author }} - {{ date }}
+ */
+public class {{ table.titleName }}Example {
+
+    protected String orderByClause;
+
+    protected boolean distinct;
+
+    protected List<Criteria> preCriteria;
+
+    public {{ table.titleName }}Example() {
+        preCriteria = new ArrayList<>();
+    }
+
+    public void setOrderByClause(String orderByClause) {
+        this.orderByClause = orderByClause;
+    }
+
+    public String getOrderByClause() {
+        return orderByClause;
+    }
+
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    public boolean isDistinct() {
+        return distinct;
+    }
+
+    public List<Criteria> getPreCriteria() {
+        return preCriteria;
+    }
+
+    public void or(Criteria criteria) {
+        preCriteria.add(criteria);
+    }
+
+    public Criteria or() {
+        Criteria criteria = createCriteriaInternal();
+        preCriteria.add(criteria);
+        return criteria;
+    }
+
+    public Criteria createCriteria() {
+        Criteria criteria = createCriteriaInternal();
+        if (preCriteria.size() == 0) {
+            preCriteria.add(criteria);
+        }
+        return criteria;
+    }
+
+    protected Criteria createCriteriaInternal() {
+        Criteria criteria = new Criteria();
+        return criteria;
+    }
+
+    public void clear() {
+        preCriteria.clear();
+        orderByClause = null;
+        distinct = false;
+    }
+
+    protected abstract static class GeneratedCriteria {
+        protected List<Criterion> criteria;
+
+        protected GeneratedCriteria() {
+            super();
+            criteria = new ArrayList<Criterion>();
+        }
+
+        public boolean isValid() {
+            return criteria.size() > 0;
+        }
+
+        public List<Criterion> getAllCriteria() {
+            return criteria;
+        }
+
+        public List<Criterion> getCriteria() {
+            return criteria;
+        }
+
+        protected void addCriterion(String condition) {
+            if (condition == null) {
+                throw new RuntimeException("Value for condition cannot be null");
+            }
+            criteria.add(new Criterion(condition));
+        }
+
+        protected void addCriterion(String condition, Object value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            criteria.add(new Criterion(condition, value));
+        }
+
+        protected void addCriterion(String condition, Object value1, Object value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}IsNull() {
+            addCriterion("{{table.primaryColumn.name}} is null");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}IsNotNull() {
+            addCriterion("{{table.primaryColumn.name}} is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}EqualTo({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} =", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}NotEqualTo({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} <>", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}In(List<{{table.primaryColumn.javaType}}> values) {
+            addCriterion("{{table.primaryColumn.name}} in", values, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}NotIn(List<{{table.primaryColumn.javaType}}> values) {
+            addCriterion("{{table.primaryColumn.name}} not in", values, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}Between({{table.primaryColumn.javaType}} value1, {{table.primaryColumn.javaType}} value2) {
+            addCriterion("{{table.primaryColumn.name}} between", value1, value2, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}NotBetween({{table.primaryColumn.javaType}} value1, {{table.primaryColumn.javaType}} value2) {
+            addCriterion("{{table.primaryColumn.name}} not between", value1, value2, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+        {% if(table.primaryColumn.javaType != "String") %}
+        public Criteria and{{table.primaryColumn.titleName}}GreaterThan({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} >", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}GreaterThanOrEqualTo({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} >=", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}LessThan({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} <", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{table.primaryColumn.titleName}}LessThanOrEqualTo({{table.primaryColumn.javaType}} value) {
+            addCriterion("{{table.primaryColumn.name}} <=", value, "{{table.primaryColumn.camelName}}");
+            return (Criteria) this;
+        }
+        {%- endif %}
+        {% if (column.javaType == "String") -%}
+        public Criteria and{{column.titleName}}Like({{column.javaType}} value) {
+            addCriterion("{{column.name}} like", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.name}}NotLike({{column.javaType}} value) {
+            addCriterion("{{column.name}} not like", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+        {%- endif -%}
+
+        {% for column in table.columnList %}
+        public Criteria and{{column.titleName}}IsNull() {
+            addCriterion("{{column.name}} is null");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}IsNotNull() {
+            addCriterion("{{column.name}} is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}EqualTo({{column.javaType}} value) {
+            addCriterion("{{column.name}} =", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}NotEqualTo({{column.javaType}} value) {
+            addCriterion("{{column.name}} <>", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}In(List<{{column.javaType}}> values) {
+            addCriterion("{{column.name}} in", values, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}NotIn(List<{{column.javaType}}> values) {
+            addCriterion("{{column.name}} not in", values, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}Between({{column.javaType}} value1, {{column.javaType}} value2) {
+            addCriterion("{{column.name}} between", value1, value2, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}NotBetween({{column.javaType}} value1, {{column.javaType}} value2) {
+            addCriterion("{{column.name}} not between", value1, value2, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+        {% if(column.javaType != "String") -%}
+        public Criteria and{{column.titleName}}GreaterThan({{column.javaType}} value) {
+            addCriterion("{{column.name}} >", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}GreaterThanOrEqualTo({{column.javaType}} value) {
+            addCriterion("{{column.name}} >=", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}LessThan({{column.javaType}} value) {
+            addCriterion("{{column.name}} <", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.titleName}}LessThanOrEqualTo({{column.javaType}} value) {
+            addCriterion("{{column.name}} <=", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+        {%- endif %}
+        {% if (column.javaType == "String") -%}
+        public Criteria and{{column.titleName}}Like({{column.javaType}} value) {
+            addCriterion("{{column.name}} like", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+
+        public Criteria and{{column.name}}NotLike({{column.javaType}} value) {
+            addCriterion("{{column.name}} not like", value, "{{column.camelName}}");
+            return (Criteria) this;
+        }
+        {% endif -%}
+    {%- endfor %}
+    }
+
+    public static class Criteria extends GeneratedCriteria {
+
+        protected Criteria() {
+            super();
+        }
+
+        public Criteria andFieldLike(final String fieldName, final String keyword) {
+            addCriterion(fieldName + " like ", keyword, fieldName);
+            return this;
+        }
+    }
+
+    public static class Criterion {
+        private String condition;
+
+        private Object value;
+
+        private Object secondValue;
+
+        private boolean noValue;
+
+        private boolean singleValue;
+
+        private boolean betweenValue;
+
+        private boolean listValue;
+
+        private String typeHandler;
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public Object getSecondValue() {
+            return secondValue;
+        }
+
+        public boolean isNoValue() {
+            return noValue;
+        }
+
+        public boolean isSingleValue() {
+            return singleValue;
+        }
+
+        public boolean isBetweenValue() {
+            return betweenValue;
+        }
+
+        public boolean isListValue() {
+            return listValue;
+        }
+
+        public String getTypeHandler() {
+            return typeHandler;
+        }
+
+        protected Criterion(String condition) {
+            super();
+            this.condition = condition;
+            this.typeHandler = null;
+            this.noValue = true;
+        }
+
+        protected Criterion(String condition, Object value, String typeHandler) {
+            super();
+            this.condition = condition;
+            this.value = value;
+            this.typeHandler = typeHandler;
+            if (value instanceof List<?>) {
+                this.listValue = true;
+            } else {
+                this.singleValue = true;
+            }
+        }
+
+        protected Criterion(String condition, Object value) {
+            this(condition, value, null);
+        }
+
+        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
+            super();
+            this.condition = condition;
+            this.value = value;
+            this.secondValue = secondValue;
+            this.typeHandler = typeHandler;
+            this.betweenValue = true;
+        }
+
+        protected Criterion(String condition, Object value, Object secondValue) {
+            this(condition, value, secondValue, null);
+        }
+    }
+}

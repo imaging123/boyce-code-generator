@@ -1,0 +1,20 @@
+package {{groupId}}.service.impl;
+
+import com.tbex.common.sharding.service.abs.AbsCrudShardingService;
+import {{groupId}}.data.{{table.titleName}}Repository;
+import {{groupId}}.domain.{{table.titleName}};
+import {{groupId}}.domain.example.{{table.titleName}}Example;
+import {{groupId}}.service.{{table.titleName}}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author {{author}} - {{date}}
+ */
+@Slf4j
+@Service
+public class {{table.titleName}}ServiceImpl
+    extends AbsCrudShardingService<{{table.titleName}}Repository, {{table.titleName}}, {{table.titleName}}Example,
+    {{table.primaryColumn.javaType}}> implements {{table.titleName}}Service {
+
+}

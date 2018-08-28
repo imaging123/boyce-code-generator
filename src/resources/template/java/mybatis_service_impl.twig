@@ -1,0 +1,26 @@
+package {{groupId}}.service.impl;
+
+import {{groupId}}.commons.mybatis.service.AbstractCrudService;
+import {{groupId}}.data.{{table.titleName}}Repository;
+import {{groupId}}.domain.{{table.titleName}};
+import {{groupId}}.domain.example.{{table.titleName}}Example;
+import {{groupId}}.service.{{table.titleName}}Service;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author {{author}} - {{date}}
+ */
+@Slf4j
+@Service
+public class {{table.titleName}}ServiceImpl
+    extends AbstractCrudService<{{table.titleName}}Repository, {{table.titleName}}, {{table.titleName}}Example, {{table.primaryColumn.javaType}}>
+    implements {{table.titleName}}Service {
+
+    @Override
+    protected {{table.titleName}}Example getPageExample(final String fieldName, final String keyword) {
+        final {{table.titleName}}Example example = new {{table.titleName}}Example();
+        example.createCriteria().andFieldLike(fieldName, keyword);
+        return example;
+    }
+}

@@ -1,0 +1,15 @@
+package {{ groupId }}.data;
+{%- set tableName = table.titleName %}
+
+import com.tbex.common.usural.operation.CrudOperation;
+import {{ groupId }}.domain.{{ tableName }};
+import {{ groupId }}.domain.example.{{ tableName }}Example;
+import org.springframework.stereotype.Repository;
+
+/**
+ * @author {{ author }} - {{ date }}
+ */
+@Repository
+public interface {{ tableName }}Repository
+    extends CrudOperation<{{ tableName }}, {{ tableName }}Example, {{ table.primaryColumn.javaType }}> {
+}

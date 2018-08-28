@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" hgap="25" prefHeight="506.0" prefWidth="296.0" vgap="30"
+          xmlns="http://javafx.com/javafx/8.0.121" fx:controller="controller.DataSourceInfoController">
+    <padding>
+        <Insets bottom="25" left="25" top="25"/>
+    </padding>
+
+    <Label text="Name" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+    <Label text="DB" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <ChoiceBox fx:id="dataSourceType" onAction="#onChangeType" prefHeight="27.0" prefWidth="167.0" value="MySQL"
+               GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="MySQL"/>
+                <String fx:value="SqlServer"/>
+                <String fx:value="Oracle"/>
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+
+    <Label text="IP" GridPane.fillHeight="25" GridPane.fillWidth="80" GridPane.rowIndex="3"/>
+    <TextField fx:id="ip" text="localhost" GridPane.columnIndex="1" GridPane.fillHeight="25" GridPane.fillWidth="150"
+               GridPane.rowIndex="3"/>
+
+    <Label text="Port" GridPane.rowIndex="4"/>
+    <TextField fx:id="port" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <Label text="User" GridPane.rowIndex="5"/>
+    <TextField fx:id="user" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <Label text="Password" GridPane.rowIndex="6"/>
+    <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+    <Button onAction="#testConnection" prefHeight="27.0" prefWidth="167.0" text="Test connection"
+            GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveDataSource" prefHeight="27.0" prefWidth="166.0"
+            text="Save" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+    <columnConstraints>
+        <ColumnConstraints maxWidth="68.0" minWidth="62.0" prefWidth="68.0"/>
+        <ColumnConstraints maxWidth="161.0" minWidth="155.0" prefWidth="155.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
+    <opaqueInsets>
+        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0"/>
+    </opaqueInsets>
+
+</GridPane>
