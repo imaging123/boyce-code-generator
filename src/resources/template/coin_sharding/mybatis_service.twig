@@ -1,6 +1,6 @@
 package {{groupId}}.service;
 
-import com.tbex.common.sharding.service.CrudShardingService;
+import io.bhex.exchange.mybatis.shard.service.CrudService;
 import {{groupId}}.domain.{{table.titleName}};
 import {{groupId}}.domain.example.{{table.titleName}}Example;
 
@@ -8,5 +8,5 @@ import {{groupId}}.domain.example.{{table.titleName}}Example;
  * @author {{author}} - {{date}}
  */
 public interface {{table.titleName}}Service
-    extends CrudShardingService<{{table.titleName}}, {{table.titleName}}Example, {{table.primaryColumn.javaType}}> {
+    extends CrudService<{{table.titleName}}, {{table.titleName}}Example, {{table.primaryColumn.javaType}}> {
 }

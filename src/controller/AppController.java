@@ -3,7 +3,11 @@ package controller;
 import controller.handler.DbTreeViewMouseHandler;
 import data.core.DataSourceManager;
 import data.core.GeneratingContentInfo;
-import data.custom.*;
+import data.custom.BoyceMyBatisMVCTemplate;
+import data.custom.JavaMyBatisMVCTemplate;
+import data.custom.MyBatisMVCTemplate;
+import data.custom.MyBatisMVCTemplateBase;
+import data.custom.ShardingMyBatisMVCTemplate;
 import data.dao.DataSourceRepository;
 import data.domain.JavaProjectInfo;
 import data.domain.MyBatisTemplateItem;
@@ -18,7 +22,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBoxTreeItem;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.CheckBoxTreeCell;
 import javafx.scene.input.MouseEvent;
@@ -27,9 +41,18 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import static data.domain.MyBatisTemplateNames.*;
+import static data.domain.MyBatisTemplateNames.EXAMPLE;
+import static data.domain.MyBatisTemplateNames.MYBATIS_XML;
+import static data.domain.MyBatisTemplateNames.POJO;
+import static data.domain.MyBatisTemplateNames.REPOSITORY;
+import static data.domain.MyBatisTemplateNames.SERVICE;
+import static data.domain.MyBatisTemplateNames.SERVICE_IML;
 import static view.tool.WindowUtil.showInfoDialog;
 
 /**
@@ -69,7 +92,7 @@ public class AppController {
     private JavaProjectInfo javaProjectInfo;
 
     static {
-        templateTypeMap.put("58coin", CoinMyBatisMVCTemplate.class);
+        templateTypeMap.put("58coin", MyBatisMVCTemplate.class);
         templateTypeMap.put("java", JavaMyBatisMVCTemplate.class);
     }
 
@@ -333,10 +356,10 @@ public class AppController {
 
     private MyBatisMVCTemplateBase getMyBatisMVCTemplate(JavaProjectInfo javaProjectInfo) {
         switch (this.templateType.getValue()) {
-            case "58coin":
-                return new CoinMyBatisMVCTemplate(javaProjectInfo);
-            case "58coin_sharding":
-                return new CoinShardingMyBatisMVCTemplate(javaProjectInfo);
+            case "bhex":
+                return new MyBatisMVCTemplate(javaProjectInfo);
+            case "bhex_shard":
+                return new ShardingMyBatisMVCTemplate(javaProjectInfo);
             case "java":
                 return new JavaMyBatisMVCTemplate(javaProjectInfo);
             default:

@@ -225,34 +225,34 @@
         </foreach>
     </select>
 
-     <select id="countByExample" resultType="java.lang.Integer" parameterType="java.util.Map">
+    <select id="countByExample" resultType="java.lang.Integer" parameterType="java.util.Map">
+       select count(*) as total from <include refid="tableName"/>
+       <if test="example != null">
+           <include refid="exampleWhereClause"/>
+       </if>
+    </select>
+
+    <select id="countByPager" resultType="java.lang.Integer" parameterType="java.util.Map">
         select count(*) as total from <include refid="tableName"/>
         <if test="example != null">
             <include refid="exampleWhereClause"/>
         </if>
-     </select>
+    </select>
 
-     <select id="countByPager" resultType="java.lang.Integer" parameterType="java.util.Map">
-         select count(*) as total from <include refid="tableName"/>
-         <if test="example != null">
-             <include refid="exampleWhereClause"/>
-         </if>
-     </select>
+    <select id="selectByPager" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
+        select
+        <include refid="baseColumnList"/>
+        from
+        <include refid="tableName"/>
+        <if test="example != null">
+            <include refid="exampleWhereClause"/>
+        </if>
+        <if test="pager.sortItem != null and pager.sortItem != '' ">
+            order by ${pager.sortItem} ${pager.sortType}
+        </if>
+        limit #{pager.startIndex} , #{pager.pageSize}
+    </select>
+    <!-- end select -->
 
-     <select id="selectByPager" resultMap="{{table.titleName}}Map" parameterType="java.util.Map">
-         select
-         <include refid="baseColumnList"/>
-         from
-         <include refid="tableName"/>
-         <if test="example != null">
-             <include refid="exampleWhereClause"/>
-         </if>
-         <if test="pager.sortItem != null and pager.sortItem != '' ">
-             order by ${pager.sortItem} ${pager.sortType}
-         </if>
-         limit #{pager.startIndex} , #{pager.pageSize}
-     </select>
-     <!-- end select -->
-
-     <!-- My Custom Interfaces -->
+    <!-- My Custom Interfaces -->
 </mapper>
