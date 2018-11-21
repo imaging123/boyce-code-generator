@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static view.tool.WindowUtil.showInfoDialog;
 
@@ -38,6 +39,10 @@ public class DbTreeViewMouseHandler implements EventHandler<MouseEvent> {
         if (value.getClickCount() == 2) {
             if (value.getTarget() instanceof CheckBoxTreeCell) {
                 TreeItem<String> targetItem = ((CheckBoxTreeCell) value.getTarget()).getTreeItem();
+                // 点击空白处
+                if (Objects.isNull(targetItem)) {
+                    return;
+                }
                 Boolean loaded = nodeDataLoadMap.get(targetItem.getValue());
                 if (loaded == null) {
                     if (loadTreeItem(targetItem)) {
